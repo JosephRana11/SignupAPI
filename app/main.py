@@ -73,7 +73,7 @@ def get_user(username : str):
         return user_data.dict()
 
 #for deleteing user account
-@app.delete('/user' , status_code=status.HTTP_200_OK)
+@app.post('/delete-user' , status_code=status.HTTP_200_OK)
 def get_user(user_delete : user_delete):
      
     if user_delete.password != user_delete.confirm_password:
@@ -81,9 +81,9 @@ def get_user(user_delete : user_delete):
     
     user = query_user_data(username=user_delete.username)
     
+    
     if user is None:
         raise HTTPException(status_code=404 , detail="User Credentials Invalid")
-    
     valid_user = check_encrypted_password(plain_password=user_delete.password , hashed_password=user.hashed_password)
 
     if valid_user:
