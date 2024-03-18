@@ -8,7 +8,7 @@ Base = declarative_base()
 
 
 def generate_uuid():
-    return str(uuid.uiid4())
+    return str(uuid.uuid4())
 
 class User(Base):
     __tablename__ = "user"

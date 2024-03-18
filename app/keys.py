@@ -1,0 +1,1 @@
+local_database_url = "postgresql://postgres:helloworld2004@localhost:5432/test_erp"
