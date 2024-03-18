@@ -9,6 +9,5 @@ pwd_context = CryptContext(
 def encrypt_password(password):
     return pwd_context.encrypt(password)
 
-def check_encrypted_password(password , user_password):
-    hashed = encrypt_password(password)
-    return password == user_password
+def check_encrypted_password(plain_password , hashed_password):
+    return pwd_context.verify(plain_password , hashed_password)

@@ -2,9 +2,11 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from models.models import User
 
-from authsys.hash import encrypt_password
+from authsys.hash import encrypt_password , check_encrypted_password
 
 from controller.modif import create_new_user , query_user_data , confirm_user_is_unique
+
+from fastapi import status , HTTPException
 
 app = FastAPI()
 
@@ -16,6 +18,10 @@ class base_user(BaseModel):
     email : str 
     password : str 
     confirm_password  : str         
+
+class user_login(BaseModel):
+    username : str 
+    password : str
 
 
 #for root url
@@ -54,6 +60,20 @@ def get_user(base_user : base_user):
 
 @app.get('/user/{username}')
 def get_user(username : str):
-    user = query_user_data(username)
-    return user
+    user_data = query_user_data(username)
+    return user_data.dict()
+
+@app.post('/login')
+def login_user(login_user : user_login):
+    user_data = query_user_data(login_user.username)
+
+    
+    #print(user_data.username , user_data.hashed_password)
+    validated_user = check_encrypted_password(plain_password=login_user.password , hashed_password=user_data.hashed_password)
+
+    if validated_user == True:
+        return {"status" : "User Logged in"}
+    else: 
+        return {"status" : "user login failed"}
+
 

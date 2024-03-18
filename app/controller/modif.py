@@ -40,4 +40,4 @@ def query_user_data(username):
         if user is None:
             return {"error" : "User does not exist int the database"}
         else:
-            return user.dict()
+            return user
