@@ -27,17 +27,22 @@ def confirm_user_is_unique(username , email):
     with session_maker() as session:
         user = session.query(User).filter_by(username = username).first()
         if user is not None:
-            return {"Error" : "Username is Taken! : PLease try another username" }
+            return "error"
         user = session.query(User).filter_by(email = email).first()
         if user is not None:
-            return {"Error" : "User with Email already exists!. Please login in to your Account or signup using a new one"}
+            return "error"
         return None 
 
 
+#returns user model instance *username
 def query_user_data(username):
     with session_maker() as session:
         user = session.query(User).filter_by(username = username).first()
-        if user is None:
-            return {"error" : "User does not exist int the database"}
-        else:
-            return user
+        return user
+    
+
+def delete_user(user):
+    with session_maker() as session:
+        session.delete(user)
+        session.commit()
+        
